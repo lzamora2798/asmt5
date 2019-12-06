@@ -33,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                 // mostrarRegistrosPorPantalla(snapshot); }
-                cantidad+=1;
                 mostrarRegistrosPorPantalla();
+                cantidad+=1;
             }
             @Override
             public void onCancelled(DatabaseError error) {
@@ -48,7 +48,15 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout contAxis = (LinearLayout) findViewById(R.id.ContenedorAxis);
         //String tempVal = String.valueOf(snapshot.child("flag").getValue());
         TextView temp = new TextView(getApplicationContext());
-        value.setText(" "+cantidad);
+        if (cantidad ==0){
+            value.setText("vacio  " + cantidad);
+        }
+        else if(cantidad % 2 ==0){ //para cuadno el contador este impart
+            value.setText("lleno  " + cantidad);
+        }
+        else if (cantidad % 2 !=0){ // para cuando el contador este par
+            value.setText("vacio  " + cantidad);
+        }
         contTemp.addView(temp);
         TextView axis = new TextView(getApplicationContext());
         contAxis.addView(axis);
