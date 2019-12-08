@@ -1,64 +1,50 @@
 package com.example.myapplication;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Intent;
 import android.os.Bundle;
 
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.util.Log;
+import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import androidx.appcompat.app.AppCompatActivity;
+
+
 public class MainActivity extends AppCompatActivity {
-
-    DatabaseReference db_reference;
-    int cantidad;
-    TextView value;
+    private EditText txtNombre, txtApellido, txtUsuario, txtPasswd;
+    private Button btnLogin, btnRegistro;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        value= (TextView) findViewById(R.id.valor);
-        db_reference = FirebaseDatabase.getInstance().getReference().child("Registros");
-        leerRegistros();
-
+        //Referencias a los controles
+        txtUsuario = (EditText) findViewById(R.id.txtUsuario);
+        txtPasswd = (EditText) findViewById(R.id.txtPasswd);
+        btnLogin = (Button) findViewById(R.id.btnLogin);
+        btnRegistro = (Button) findViewById(R.id.btnRegistro);
+    }
+    public void registrarse(View view) {
+        Intent intent = new Intent(this, formulario_registro.class);
+        startActivity(intent);
+    }
+    public void login(View view) {
+        Toast toast=Toast.makeText(getApplicationContext(),"Usted no cuenta con un usuario",Toast.LENGTH_SHORT);
+        toast.show();
+    }
+    public void datos(View view) {
+        Intent intent = new Intent(this, PantallaDatos.class);
+        startActivity(intent);
 
     }
-    private void leerRegistros() {
-        db_reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                //for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                // mostrarRegistrosPorPantalla(snapshot); }
-                mostrarRegistrosPorPantalla();
-                cantidad+=1;
-            }
-            @Override
-            public void onCancelled(DatabaseError error) {
-                System.out.println(error.toException());
-            }
-        });
 
-    }
-    public void mostrarRegistrosPorPantalla(){
-        LinearLayout contTemp = (LinearLayout) findViewById(R.id.ContenedorTemp);
-        LinearLayout contAxis = (LinearLayout) findViewById(R.id.ContenedorAxis);
-        //String tempVal = String.valueOf(snapshot.child("flag").getValue());
-        TextView temp = new TextView(getApplicationContext());
-        if (cantidad ==0){
-            value.setText("vacio  " + cantidad);
+    public void onClick(View v) {
+        if(v.getId() == R.id.btnLogin){
+            Log.d("mensaje","ïngreso");
+        }else if(v.getId() == R.id.btnRegistro) {
         }
-        else if(cantidad % 2 ==0){ //para cuadno el contador este impart
-            value.setText("lleno  " + cantidad);
-        }
-        else if (cantidad % 2 !=0){ // para cuando el contador este par
-            value.setText("vacio  " + cantidad);
-        }
-        contTemp.addView(temp);
-        TextView axis = new TextView(getApplicationContext());
-        contAxis.addView(axis);
     }
 }
